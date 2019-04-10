@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Manager;
+use Laravel\Socialite\Two\AnotherProvider;
 use Laravel\Socialite\Two\GithubProvider;
 use Laravel\Socialite\Two\GitlabProvider;
 use Laravel\Socialite\Two\GoogleProvider;
@@ -109,6 +110,20 @@ class SocialiteManager extends Manager implements Contracts\Factory
 
         return $this->buildProvider(
             GitlabProvider::class, $config
+        );
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Laravel\Socialite\Two\AbstractProvider
+     */
+    protected function createAnotherDriver()
+    {
+        $config = $this->app['config']['services.another'];
+
+        return $this->buildProvider(
+            AnotherProvider::class, $config
         );
     }
 
