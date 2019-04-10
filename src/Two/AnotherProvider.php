@@ -3,8 +3,8 @@
 
 namespace Laravel\Socialite\Two;
 
-
 use Exception;
+use Illuminate\Support\Arr;
 
 class AnotherProvider extends AbstractProvider implements ProviderInterface
 {
@@ -30,9 +30,22 @@ class AnotherProvider extends AbstractProvider implements ProviderInterface
         return 'http://laravel-oauth2-server.test/oauth/token';
     }
 
+    /**
+     * Get the POST fields for the token request.
+     *
+     * @param  string  $code
+     * @return array
+     */
+    protected function getTokenFields($code)
+    {
+        return Arr::add(
+            parent::getTokenFields($code), 'grant_type', 'authorization_code'
+        );
+    }
+
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://www.googleapis.com/oauth2/v3/userinfo', [
+        $response = $this->getHttpClient()->get('http://laravel-oauth2-server.test/user', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer '.$token,
