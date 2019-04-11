@@ -6,6 +6,10 @@ namespace Laravel\Socialite\Two;
 use Exception;
 use Illuminate\Support\Arr;
 
+/**
+ * Class AnotherProvider
+ * @package Laravel\Socialite\Two
+ */
 class AnotherProvider extends AbstractProvider implements ProviderInterface
 {
     /**
@@ -43,6 +47,10 @@ class AnotherProvider extends AbstractProvider implements ProviderInterface
         );
     }
 
+    /**
+     * @param string $token
+     * @return array|mixed
+     */
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get('http://laravel-oauth2-server.test/user', [
@@ -58,6 +66,10 @@ class AnotherProvider extends AbstractProvider implements ProviderInterface
     }
 
 
+    /**
+     * @param array $user
+     * @return User
+     */
     protected function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
@@ -67,14 +79,4 @@ class AnotherProvider extends AbstractProvider implements ProviderInterface
             'email' => Arr::get($user, 'email'),
         ]);
     }
-
-    protected function getRequestOptions()
-    {
-        return [
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-        ];
-    }
-
 }
